@@ -6,7 +6,7 @@ Introduction to Data Mining. 1st ed. Boston: Pearson / Addison Wesley, 2006. (pp
 """
 
 # original author information, this verison is updated by lina.
-__copyright__ = 'Copyright © 2020 ERSSLE'
+__copyright__ = 'Copyright © 2022 ERSSLE'
 __license__ = 'MIT License'
 
 from collections import defaultdict
@@ -195,7 +195,7 @@ def find_frequent_itemsets_alpha(cnt):
 def find_frequent_itemsets(datas,minimum_support,reverse=True):
     """
     基于给定的支持度，查找频繁项集
-    datas: 双层python链表，内嵌层每一项元素代表一条数据
+    datas: 双层python链表，每一项元素代表一条数据
     minimum_support: 支持度
     reverse: 指定树生长时的排序方式，默认从高频项到低频项，也可反转（False）
     """
