@@ -5,7 +5,7 @@ Introduction to Data Mining. 1st ed. Boston: Pearson / Addison Wesley, 2006. (pp
 
 """
 
-# original author information, this verison is updated by lina.
+# original author information
 __copyright__ = 'Copyright © 2022 ERSSLE'
 __license__ = 'MIT License'
 

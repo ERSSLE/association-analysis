@@ -4,7 +4,7 @@
 
 """
 
-# original author information, this verison is updated by lina.
+# original author information
 __copyright__ = 'Copyright © 2022 ERSSLE'
 __license__ = 'MIT License'
 
@@ -52,6 +52,9 @@ def find_frequent_itemsets(transactions,minimum_support):
         item_num = len(frequent_items_k_1[0][0]) + 1 # 本轮频繁项集长度
         frequent_items_alpha = [] # 特定长度频繁项集，这里长度为>=2，即Fk >= 2
         count = [] # 存储支持度
+        
+        # 新长度下频繁项集产生基于Fk-1 x Fk-1策略，详细可以查看《数据挖掘导论(完整版)》Pang-Ning Tan,
+        # Michael Steinbach, Vipin Kunmar著 6.2.3小节
         for i in range(items_length-1):
             for j in range(i+1,items_length):
                 left_item = frequent_items_k_1[i][0]
