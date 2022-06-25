@@ -60,7 +60,7 @@ def find_rules(itemsets,transactions_size,minimum_conf,minimum_lift=None):
                         all_rules.append((left,right,sup,conf,lift))
     return all_rules
 
-def find_frequent_itemsets(find_func,transactions,minimum_support,*args):
+def find_frequent_itemsets(find_func,transactions,minimum_support,**kargs):
     """
     通过特定算法发掘频繁项集;
     minimum_support >= 1且为整数时，代表支持度计数;1.0 >= minimum_support >= 0.0 且为float时代表支持度
@@ -68,5 +68,5 @@ def find_frequent_itemsets(find_func,transactions,minimum_support,*args):
     """
     if minimum_support <= 1 and minimum_support >= 0 and type(minimum_support) == float:
         minimum_support = len(transactions) * minimum_support
-    itemsets = find_func(transactions,minimum_support,*args)
+    itemsets = find_func(transactions,minimum_support,**kargs)
     return itemsets
