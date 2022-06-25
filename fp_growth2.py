@@ -93,7 +93,7 @@ class FPTree(object):
         def clean_transaction(transaction):
             transaction = filter(lambda v: v in items, transaction)
             transaction_list = list(transaction)
-            transaction_list.sort(key=lambda v: items[v], reverse=self._reverse)
+            transaction_list.sort(key=lambda v: self.item_list[::-1].index(v), reverse=self._reverse)
             return transaction_list
         for transaction in map(clean_transaction,transactions):
             self.add(transaction)
@@ -172,11 +172,13 @@ def find_counts(tree,minimum_support,node_to_item=None):
             child_tree = find_child_tree(tree,item,node_to_item)
             if get_count(tree,item) >= minimum_support:
                 trees.append(child_tree)
+            else:
+                None 
         return {tr.item_list[-1]:(
             get_count(tr,tr.item_list[-1]),
             find_trees_count(tr)
             ) for tr in trees
-               }
+            }
     return find_trees_count(tree)
 
 def find_frequent_itemsets_alpha(cnt):
