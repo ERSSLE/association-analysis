@@ -9,7 +9,7 @@ __copyright__ = 'Copyright © 2022 ERSSLE'
 __license__ = 'MIT License'
 
 from itertools import combinations
-from math import sqrt,log
+from numpy import sqrt,log
 
 def find_support_from_itemsets(target_set,itemsets):
     """
@@ -139,7 +139,7 @@ class Evatn_func(object):
         f0a = N - f1a
         fa1 = right_count
         fa0 = N - fa1
-        return (f11*f00 + f01*f10)/sqrt(f1a*fa1*f0a*fa0)
+        return (f11*f00 + f01*f10) / (sqrt(f1a)*sqrt(fa1)*sqrt(f0a)*sqrt(fa0))
 
     @staticmethod
     def IS(union_count,left_count,right_count,N):
