@@ -11,3 +11,5 @@
   fp_growth2.py是我自己的实现。
 
   apriori.py是apriori算法的实现，实现基于numpy以使计算更快速。
+
+  rule.py 基于频繁项挖掘结果的关联规则生成，同时定义了一些常用的衡量规则质量的度量。
