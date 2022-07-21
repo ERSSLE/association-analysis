@@ -18,31 +18,42 @@ def gen_items(transactions):
                 items.append(item)
     return items,i+1
 
-def gen_matrix(transactions):
+def gen_matrix(transactions,mode='general'):
     """通过购物篮类数据创建np.array"""
     items,length = gen_items(transactions)
     matrix = np.zeros((length,len(items)))
     for row_idx,transaction in enumerate(transactions):
         for item in transaction:
             col_idx = items.index(item)
-            matrix[row_idx,col_idx] = 1
-    return matrix,np.asarray(items)
+            if mode == 'general':
+                matrix[row_idx,col_idx] = 1
+            elif mode == 'mini':
+                matrix[row_idx,col_idx] += 1
+    if mode == 'mini':
+        return matrix / matrix.sum(0),np.asarray(items)
+    elif mode == 'general':
+        return matrix,np.asarray(items)
 
-def find_frequent_itemsets(transactions,minimum_support):
+def find_frequent_itemsets(transactions,minimum_support,mode='general'):
     """
     基于给定的支持度，查找频繁项集
     transactions: 类双层python链表，每一项元素代表一条数据
     minimum_support: 支持度
+    model: general or mini,general为普通的apriori,mini指mini-apriori
+    mini-apriori不关心项出现的绝对频率是否足够，只关心项之间关联的强度,mini模式下,minimum_support的值应该在0-1
     """
-    matrix,items = gen_matrix(transactions)
+    matrix,items = gen_matrix(transactions,mode)
     cnts = matrix.sum(0)
-    mask = cnts >= minimum_support
+    if mode == 'general':
+        mask = cnts >= minimum_support
+    elif mode == 'mini': #如果为mini模式这里不作频繁项集的筛选
+        mask = cnts >= 0
     matrix = matrix[:,mask] # 根据最小支持度筛选matrix
     items = items[mask] # 根据最小支持度筛选items
     cnts = cnts[mask] # 根据最小支持度初步筛选cnts
 
     # 特定长度频繁项集，这里长度为1，即Fk = 1
-    frequent_items_alpha = [(np.asarray([items.tolist().index(item)]),int(cnt)) for item,cnt in zip(items,cnts)]
+    frequent_items_alpha = [(np.asarray([items.tolist().index(item)]),int(round(cnt))) for item,cnt in zip(items,cnts)]
     # 用于存储所有的频繁项集
     frequent_items = []
     frequent_items.append(frequent_items_alpha)
@@ -65,7 +76,10 @@ def find_frequent_itemsets(transactions,minimum_support):
                     condition = left_item[-1] != right_item[-1]
                 if condition:
                     candidate = np.append(left_item,right_item[-1])
-                    cnt = (matrix[:,candidate].sum(1) == item_num).sum()
+                    if mode == 'general':
+                        cnt = (matrix[:,candidate].sum(1) == item_num).sum()
+                    elif mode == 'mini':
+                        cnt = matrix[:,candidate].min(1).sum()
                     if cnt >= minimum_support:
                         frequent_items_alpha.append(candidate)
                         count.append(cnt)
